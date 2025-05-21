@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 주변 마음 쉬는 곳 - 청소년 마음건강 정보 허브</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_MAP_API_KEY"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">청소년 마음건강 정보 허브</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="info.html">마음건강 정보</a></li>
+                <li><a href="selfcheck.html">자가진단 (참고용)</a></li>
+                <li><a href="support.html">도움기관 찾기</a></li>
+                <li><a href="healing_spots.html">내 주변 마음 쉬는 곳</a></li>
+                <li><a href="mental-weather.html">데이터로 보는 마음날씨</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="healing-header">
+            <h1>내 주변 마음 쉬는 곳</h1>
+            <p>가까운 공공시설에서 마음의 휴식을 찾아보세요</p>
+        </section>
+
+        <section class="healing-filter">
+            <div class="filter-container">
+                <div class="category-filter">
+                    <label for="category-select">시설 종류:</label>
+                    <select id="category-select">
+                        <option value="park">공원</option>
+                        <option value="library">공공도서관</option>
+                        <option value="youth">청소년수련시설</option>
+                    </select>
+                </div>
+                <div class="distance-filter">
+                    <label for="distance-select">검색 반경:</label>
+                    <select id="distance-select">
+                        <option value="1000">1km</option>
+                        <option value="2000">2km</option>
+                        <option value="3000">3km</option>
+                        <option value="5000">5km</option>
+                    </select>
+                </div>
+                <button id="search-button" class="search-button">
+                    <i class="fas fa-search"></i>내 주변 검색
+                </button>
+            </div>
+        </section>
+
+        <section class="healing-content">
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+            <div class="spots-list">
+                <div class="spots-grid">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 위치 권한 요청 모달 -->
+        <div id="location-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>위치 정보 사용</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>주변 시설을 찾기 위해 위치 정보가 필요합니다. 위치 정보 사용에 동의해주세요.</p>
+                    <div class="modal-buttons">
+                        <button id="allow-location" class="primary-button">위치 정보 사용 동의</button>
+                        <button id="deny-location" class="secondary-button">거부</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>© 2025 청소년 마음건강 정보 허브. All Rights Reserved.</p>
+                <div class="related-links">
+                    <a href="https://www.mohw.go.kr" target="_blank">보건복지부</a>
+                    <a href="https://www.kyci.or.kr" target="_blank">청소년상담복지센터</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="healing_spots.js"></script>
+    <script>
+        // 햄버거 메뉴 토글
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

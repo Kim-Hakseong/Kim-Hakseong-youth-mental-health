@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데이터로 보는 마음날씨 - 청소년 마음건강 정보 허브</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">청소년 마음건강 정보 허브</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="info.html">마음건강 정보</a></li>
+                <li><a href="selfcheck.html">자가진단 (참고용)</a></li>
+                <li><a href="support.html">도움기관 찾기</a></li>
+                <li><a href="healing_spots.html">내 주변 마음 쉬는 곳</a></li>
+                <li><a href="stats.html">데이터로 보는 마음날씨</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-header">
+            <h1>데이터로 보는 마음날씨</h1>
+            <p>청소년 정신건강 관련 통계 데이터를 통해 마음의 변화를 살펴보세요</p>
+        </section>
+
+        <section class="stats-filter">
+            <div class="filter-container">
+                <div class="indicator-filter">
+                    <label for="indicator-select">지표 선택:</label>
+                    <select id="indicator-select">
+                        <option value="stress">스트레스 인지율</option>
+                        <option value="depression">우울감 경험률</option>
+                        <option value="suicide">자살 생각률</option>
+                    </select>
+                </div>
+                <div class="chart-type-filter">
+                    <label for="chart-type-select">차트 종류:</label>
+                    <select id="chart-type-select">
+                        <option value="bar">막대 그래프</option>
+                        <option value="line">선 그래프</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-content">
+            <div class="card chart-container">
+                <canvas id="healthChart"></canvas>
+            </div>
+            <div class="grid stats-info">
+                <div class="card data-source">
+                    <h3>데이터 출처</h3>
+                    <p>KOSIS 국가통계포털 (청소년 건강행태조사)</p>
+                </div>
+                <div class="card data-description">
+                    <h3>데이터 설명</h3>
+                    <p>이 데이터는 전반적인 경향을 보여주며, 개인의 경험과는 다를 수 있습니다. 통계는 매년 전국의 중고등학생을 대상으로 조사된 결과입니다.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>© 2025 청소년 마음건강 정보 허브. All Rights Reserved.</p>
+                <div class="related-links">
+                    <a href="https://www.mohw.go.kr" target="_blank">보건복지부</a>
+                    <a href="https://www.kyci.or.kr" target="_blank">청소년상담복지센터</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="stats.js"></script>
+    <script>
+        // 햄버거 메뉴 토글
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

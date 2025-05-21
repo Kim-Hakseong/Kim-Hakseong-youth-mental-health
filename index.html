@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청소년 마음건강 정보 허브</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">청소년 마음건강 정보 허브</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="info.html">마음건강 정보</a></li>
+                <li><a href="selfcheck.html">자가진단 (참고용)</a></li>
+                <li><a href="support.html">도움기관 찾기</a></li>
+                <li><a href="healing_spots.html">내 주변 마음 쉬는 곳</a></li>
+                <li><a href="stats.html">데이터로 보는 마음날씨</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-header intro-section">
+            <div class="intro-content">
+                <h1>청소년 마음건강 정보 허브</h1>
+                <p>당신의 마음건강을 위한 첫 걸음, 여기서 시작하세요</p>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <h2>주요 기능</h2>
+            <div class="grid feature-cards">
+                <a href="info.html" class="card feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>마음건강 정보</h3>
+                    <p>청소년 마음건강에 대한 전문적인 정보를 제공합니다.</p>
+                </a>
+                <a href="selfcheck.html" class="card feature-card">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h3>자가진단</h3>
+                    <p>간단한 자가진단을 통해 현재 상태를 확인해보세요.</p>
+                </a>
+                <a href="support.html" class="card feature-card">
+                    <i class="fas fa-hands-helping"></i>
+                    <h3>도움기관 찾기</h3>
+                    <p>가까운 마음건강 전문 기관을 찾아보세요.</p>
+                </a>
+                <a href="healing_spots.html" class="card feature-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>내 주변 마음 쉬는 곳</h3>
+                    <p>가까운 공원, 도서관 등 마음을 편안하게 할 수 있는 곳을 찾아보세요.</p>
+                </a>
+                <a href="stats.html" class="card feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>데이터로 보는 마음날씨</h3>
+                    <p>청소년 정신건강 관련 통계 데이터를 확인해보세요.</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="emergency-section">
+            <div class="emergency-content">
+                <i class="fas fa-phone-alt"></i>
+                <h2>긴급 도움이 필요하신가요?</h2>
+                <div class="emergency-number">
+                    <span>24시간 상담 가능</span>
+                    <a href="tel:1388">1388</a>
+                </div>
+                <p>자살예방상담전화, 청소년상담복지센터 등 전문가의 도움을 받을 수 있습니다.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>© 2025 청소년 마음건강 정보 허브. All Rights Reserved.</p>
+                <div class="related-links">
+                    <a href="https://www.mohw.go.kr" target="_blank">보건복지부</a>
+                    <a href="https://www.kyci.or.kr" target="_blank">청소년상담복지센터</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 햄버거 메뉴 토글
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

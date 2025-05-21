@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자가진단 - 청소년 마음건강 정보 허브</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">청소년 마음건강 정보 허브</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="info.html">마음건강 정보</a></li>
+                <li><a href="selfcheck.html">자가진단 (참고용)</a></li>
+                <li><a href="support.html">도움기관 찾기</a></li>
+                <li><a href="healing_spots.html">내 주변 마음 쉬는 곳</a></li>
+                <li><a href="stats.html">데이터로 보는 마음날씨</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-header">
+            <h1>자가진단 (참고용)</h1>
+            <p>간단한 자가진단을 통해 현재 상태를 확인해보세요</p>
+        </section>
+
+        <section class="warning-section">
+            <div class="card warning-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>이 자가진단은 전문적인 진단을 대체할 수 없으며, 참고용으로만 사용해주세요. 정확한 진단과 치료를 위해서는 반드시 전문가의 상담을 받으시기 바랍니다.</p>
+            </div>
+        </section>
+
+        <section class="selfcheck-tests">
+            <div class="grid tests-grid">
+                <div class="card test-card">
+                    <div class="test-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="test-content">
+                        <h3>우울증 자가진단</h3>
+                        <p>PHQ-9를 기반으로 한 우울증 자가진단</p>
+                        <div class="test-buttons">
+                            <a href="https://www.mohw.go.kr" target="_blank" class="button button-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                                외부 진단 도구
+                            </a>
+                            <button class="button button-secondary" disabled>
+                                <i class="fas fa-lock"></i>
+                                내부 진단 도구 (준비중)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card test-card">
+                    <div class="test-icon">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div class="test-content">
+                        <h3>불안장애 자가진단</h3>
+                        <p>GAD-7을 기반으로 한 불안장애 자가진단</p>
+                        <div class="test-buttons">
+                            <a href="https://www.mohw.go.kr" target="_blank" class="button button-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                                외부 진단 도구
+                            </a>
+                            <button class="button button-secondary" disabled>
+                                <i class="fas fa-lock"></i>
+                                내부 진단 도구 (준비중)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card test-card">
+                    <div class="test-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="test-content">
+                        <h3>스트레스 자가진단</h3>
+                        <p>PSS를 기반으로 한 스트레스 자가진단</p>
+                        <div class="test-buttons">
+                            <a href="https://www.mohw.go.kr" target="_blank" class="button button-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                                외부 진단 도구
+                            </a>
+                            <button class="button button-secondary" disabled>
+                                <i class="fas fa-lock"></i>
+                                내부 진단 도구 (준비중)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>© 2025 청소년 마음건강 정보 허브. All Rights Reserved.</p>
+                <div class="related-links">
+                    <a href="https://www.mohw.go.kr" target="_blank">보건복지부</a>
+                    <a href="https://www.kyci.or.kr" target="_blank">청소년상담복지센터</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 햄버거 메뉴 토글
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 
