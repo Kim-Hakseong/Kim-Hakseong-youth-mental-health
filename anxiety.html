@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>불안감 줄이기 | 청소년 마음건강 정보 허브</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">청소년 마음건강 정보 허브</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="info.html">마음건강 정보</a></li>
+                <li><a href="selfcheck.html">자가진단 (참고용)</a></li>
+                <li><a href="support.html">도움기관 찾기</a></li>
+                <li><a href="healing_spots.html">내 주변 마음 쉬는 곳</a></li>
+                <li><a href="stats.html">데이터로 보는 마음날씨</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="detail-main">
+        <h1>불안감 줄이기</h1>
+        <img src="img/anxiety_illustration.svg" alt="불안 일러스트" class="detail-illust">
+        <section>
+            <h2>불안이란?</h2>
+            <p>불안은 미래에 대한 걱정, 두려움 등으로 나타나는 감정입니다. 적당한 불안은 도움이 되지만, 지나치면 일상에 영향을 줄 수 있습니다.</p>
+        </section>
+        <section>
+            <h2>주요 증상</h2>
+            <ul>
+                <li>과도한 걱정, 긴장</li>
+                <li>가슴 두근거림, 호흡 곤란</li>
+                <li>집중력 저하</li>
+            </ul>
+        </section>
+        <section>
+            <h2>완화 방법</h2>
+            <ul>
+                <li>심호흡, 명상, 이완 운동</li>
+                <li>규칙적인 생활 습관</li>
+                <li>필요시 전문가 상담</li>
+            </ul>
+        </section>
+        <section>
+            <h2>도움받을 수 있는 곳</h2>
+            <a href="support.html" class="detail-link">상담/지원 기관 보기</a>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <p>© 2025 청소년 마음건강 정보 허브. All Rights Reserved.</p>
+                <div class="related-links">
+                    <a href="https://www.mohw.go.kr" target="_blank">보건복지부</a>
+                    <a href="https://www.kyci.or.kr" target="_blank">청소년상담복지센터</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

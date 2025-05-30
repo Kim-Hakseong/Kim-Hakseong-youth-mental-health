@@ -6,7 +6,7 @@
     <title>내 주변 마음 쉬는 곳 - 청소년 마음건강 정보 허브</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_MAP_API_KEY"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <nav class="navbar">
@@ -61,7 +61,7 @@
 
         <section class="healing-content">
             <div class="map-container">
-                <div id="map"></div>
+                <div id="map" style="width:100%;height:400px;"></div>
             </div>
             <div class="spots-list">
                 <div class="spots-grid">
@@ -101,6 +101,7 @@
     </footer>
 
     <script src="healing_spots.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // 햄버거 메뉴 토글
         document.querySelector('.menu-toggle').addEventListener('click', function() {

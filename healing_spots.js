@@ -17,15 +17,49 @@ let map = null;
 let markers = [];
 let currentPosition = null;
 
-// 지도 초기화
+// API 엔드포인트 및 인증키
+const API_CONFIG = {
+    park: {
+        url: 'https://api.data.go.kr/openapi/tn_pubr_public_cty_park_info_api',
+        key: 'uM3N%2FpEZjbO2qFTiiWc7F6dSujuvdaaNQM39WD0bT%2F1%2FXYrS3iZ3q0LiIRVXMt%2Bvp5Zz0Ddzpl2k7%2BFnrR9V5w%3D%3D',
+        parse: (item) => ({
+            name: item.공원명,
+            address: item.소재지도로명주소 || item.소재지지번주소,
+            description: item.공원구분,
+            lat: parseFloat(item.위도),
+            lng: parseFloat(item.경도)
+        })
+    },
+    library: {
+        url: 'https://api.data.go.kr/openapi/tn_pubr_public_lbrry_api',
+        key: 'uM3N%2FpEZjbO2qFTiiWc7F6dSujuvdaaNQM39WD0bT%2F1%2FXYrS3iZ3q0LiIRVXMt%2Bvp5Zz0Ddzpl2k7%2BFnrR9V5w%3D%3D',
+        parse: (item) => ({
+            name: item.도서관명,
+            address: item.소재지도로명주소 || item.소재지지번주소,
+            description: item.도서관유형명,
+            lat: parseFloat(item.위도),
+            lng: parseFloat(item.경도)
+        })
+    },
+    youth: {
+        url: 'https://api.data.go.kr/openapi/tn_pubr_public_teen_training_fclt_api',
+        key: 'uM3N%2FpEZjbO2qFTiiWc7F6dSujuvdaaNQM39WD0bT%2F1%2FXYrS3iZ3q0LiIRVXMt%2Bvp5Zz0Ddzpl2k7%2BFnrR9V5w%3D%3D',
+        parse: (item) => ({
+            name: item.시설명,
+            address: item.소재지도로명주소 || item.소재지지번주소,
+            description: item.시설구분,
+            lat: parseFloat(item.위도),
+            lng: parseFloat(item.경도)
+        })
+    }
+};
+
+// 지도 초기화 (Leaflet)
 function initMap() {
-    const mapContainer = document.getElementById('map');
-    const defaultPosition = new kakao.maps.LatLng(37.5665, 126.9780); // 서울시청 좌표
-    
-    map = new kakao.maps.Map(mapContainer, {
-        center: defaultPosition,
-        level: 3
-    });
+    map = L.map('map').setView([37.5665, 126.9780], 13); // 서울시청
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 }
 
 // 위치 정보 가져오기
@@ -52,111 +86,90 @@ function getCurrentPosition() {
 }
 
 // 공공데이터 API 호출
-async function fetchPublicData(category, lat, lng, radius) {
-    const baseUrl = 'http://api.data.go.kr/openapi/';
-    let endpoint = '';
-    let params = {};
-
-    switch (category) {
-        case 'park':
-            endpoint = 'tn_pubr_public_park_api';
-            params = {
-                serviceKey: PUBLIC_DATA_API_KEY,
-                type: 'json',
-                pageNo: 1,
-                numOfRows: 100,
-                latitude: lat,
-            };
-            break;
-        case 'library':
-            endpoint = 'tn_pubr_public_library_api';
-            params = {
-                serviceKey: PUBLIC_DATA_API_KEY,
-                type: 'json',
-                pageNo: 1,
-                numOfRows: 100,
-                latitude: lat,
-            };
-            break;
-        case 'youth':
-            endpoint = 'tn_pubr_public_youth_facility_api';
-            params = {
-                serviceKey: PUBLIC_DATA_API_KEY,
-                type: 'json',
-                pageNo: 1,
-                numOfRows: 100,
-                latitude: lat,
-            };
-            break;
-    }
-
+async function fetchPublicData(category, lat, lng, distance) {
     try {
-        const response = await fetch(`${baseUrl}${endpoint}?${new URLSearchParams(params)}`);
+        const config = API_CONFIG[category];
+        if (!config) {
+            throw new Error('Invalid category');
+        }
+
+        const url = new URL(config.url);
+        url.searchParams.append('serviceKey', config.key);
+        url.searchParams.append('numOfRows', '100');
+        url.searchParams.append('pageNo', '1');
+        url.searchParams.append('type', 'json');
+
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-        return data.response.body.items;
+        let items = [];
+        
+        if (data.response && data.response.body && data.response.body.items) {
+            items = Array.isArray(data.response.body.items.item) 
+                ? data.response.body.items.item 
+                : [data.response.body.items.item];
+        }
+
+        if (!items || items.length === 0) {
+            throw new Error('No data found');
+        }
+
+        // 위경도 필터링 (distance 단위: m)
+        const filtered = items
+            .map(config.parse)
+            .filter(item => {
+                if (!item.lat || !item.lng) return false;
+                const dist = getDistanceFromLatLonInM(lat, lng, item.lat, item.lng);
+                return dist <= distance;
+            });
+
+        return filtered;
     } catch (error) {
         console.error('Error fetching public data:', error);
-        return [];
+        throw error;
     }
 }
 
-// 마커 생성
-function createMarker(lat, lng, title) {
-    const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(lat, lng),
-        title: title
-    });
-
-    const infowindow = new kakao.maps.InfoWindow({
-        content: `<div style="padding:5px;font-size:12px;">${title}</div>`
-    });
-
-    kakao.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map, marker);
-    });
-
-    return marker;
-}
-
-// 마커 초기화
-function clearMarkers() {
-    markers.forEach(marker => marker.setMap(null));
-    markers = [];
-}
-
-// 시설 카드 생성
-function createSpotCard(spot) {
-    const card = document.createElement('div');
-    card.className = 'spot-card';
-    
-    card.innerHTML = `
-        <h3>${spot.name}</h3>
-        <div class="spot-info">
-            <p><i class="fas fa-map-marker-alt"></i>${spot.address}</p>
-            ${spot.phone ? `<p><i class="fas fa-phone"></i>${spot.phone}</p>` : ''}
-        </div>
-        <p class="spot-description">${spot.description || '상세 정보가 없습니다.'}</p>
-    `;
-    
-    card.addEventListener('click', () => {
-        const marker = createMarker(spot.latitude, spot.longitude, spot.name);
-        marker.setMap(map);
-        map.setCenter(new kakao.maps.LatLng(spot.latitude, spot.longitude));
-    });
-    
-    return card;
-}
-
-// 시설 목록 표시
+// 시설 표시
 function displaySpots(spots) {
-    spotsGrid.innerHTML = '';
-    clearMarkers();
-    
+    // 기존 마커 제거
+    markers.forEach(marker => marker.remove());
+    markers = [];
+
+    // 시설 목록 표시
+    spotsGrid.innerHTML = spots.map(spot => `
+        <div class="spot-card" data-lat="${spot.lat}" data-lng="${spot.lng}">
+            <h3>${spot.name}</h3>
+            <div class="spot-info">
+                <p><i class="fas fa-map-marker-alt"></i>${spot.address}</p>
+                <p><i class="fas fa-info-circle"></i>${spot.description}</p>
+            </div>
+        </div>
+    `).join('');
+
+    // 지도에 마커 표시
     spots.forEach(spot => {
-        spotsGrid.appendChild(createSpotCard(spot));
-        const marker = createMarker(spot.latitude, spot.longitude, spot.name);
-        marker.setMap(map);
+        const marker = L.marker([spot.lat, spot.lng])
+            .bindPopup(`
+                <strong>${spot.name}</strong><br>
+                ${spot.address}<br>
+                ${spot.description}
+            `)
+            .addTo(map);
         markers.push(marker);
+    });
+
+    // 시설 카드 클릭 이벤트
+    document.querySelectorAll('.spot-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const lat = parseFloat(card.dataset.lat);
+            const lng = parseFloat(card.dataset.lng);
+            map.setView([lat, lng], 16);
+            markers.find(m => m.getLatLng().lat === lat && m.getLatLng().lng === lng).openPopup();
+        });
     });
 }
 
@@ -167,24 +180,43 @@ async function searchNearbySpots() {
         const category = categorySelect.value;
         const radius = parseInt(distanceSelect.value);
         
+        // 로딩 표시
+        spotsGrid.innerHTML = '<div class="loading">검색 중...</div>';
+        
         const spots = await fetchPublicData(category, position.lat, position.lng, radius);
+        
+        if (spots.length === 0) {
+            spotsGrid.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
+            return;
+        }
+
         displaySpots(spots);
         
         // 지도 중심 이동
-        map.setCenter(new kakao.maps.LatLng(position.lat, position.lng));
+        map.setView([position.lat, position.lng], 13);
         
         // 현재 위치 마커 표시
-        const currentMarker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(position.lat, position.lng),
-            title: '현재 위치'
-        });
-        currentMarker.setMap(map);
+        const currentMarker = L.marker([position.lat, position.lng])
+            .bindPopup('현재 위치')
+            .addTo(map);
         markers.push(currentMarker);
-        
     } catch (error) {
         console.error('Error searching nearby spots:', error);
-        alert('위치 정보를 가져오는데 실패했습니다. 다시 시도해주세요.');
+        spotsGrid.innerHTML = '<div class="error">검색 중 오류가 발생했습니다. 다시 시도해주세요.</div>';
     }
+}
+
+// 위경도 거리 계산 함수 (Haversine 공식)
+function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // 지구 반지름(m)
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
 }
 
 // 이벤트 리스너

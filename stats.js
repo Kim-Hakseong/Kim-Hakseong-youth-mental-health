@@ -1,27 +1,5 @@
-// 통계 데이터
-const healthData = {
-    stress: [
-        { year: 2018, rate: 35.2 },
-        { year: 2019, rate: 33.8 },
-        { year: 2020, rate: 30.5 },
-        { year: 2021, rate: 32.1 },
-        { year: 2022, rate: 34.7 }
-    ],
-    depression: [
-        { year: 2018, rate: 27.1 },
-        { year: 2019, rate: 25.8 },
-        { year: 2020, rate: 23.4 },
-        { year: 2021, rate: 24.9 },
-        { year: 2022, rate: 26.3 }
-    ],
-    suicide: [
-        { year: 2018, rate: 12.7 },
-        { year: 2019, rate: 11.9 },
-        { year: 2020, rate: 10.8 },
-        { year: 2021, rate: 11.2 },
-        { year: 2022, rate: 12.1 }
-    ]
-};
+// API 엔드포인트
+const API_ENDPOINT = 'https://api.example.com/health-stats'; // 실제 API 엔드포인트로 변경 필요
 
 // 차트 설정
 const chartConfig = {
@@ -49,9 +27,29 @@ const chartCanvas = document.getElementById('healthChart');
 
 // 전역 변수
 let healthChart = null;
+let healthData = null;
+
+// 통계 데이터 가져오기
+async function fetchHealthStats() {
+    try {
+        const response = await fetch(API_ENDPOINT);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching health stats:', error);
+        throw error;
+    }
+}
 
 // 차트 생성
 function createChart(indicator, type) {
+    if (!healthData || !healthData[indicator]) {
+        throw new Error('No data available for the selected indicator');
+    }
+
     const data = healthData[indicator];
     const config = chartConfig[indicator];
     
@@ -129,18 +127,38 @@ function createChart(indicator, type) {
     });
 }
 
-// 이벤트 리스너
-document.addEventListener('DOMContentLoaded', () => {
-    // 초기 차트 생성
-    createChart(indicatorSelect.value, chartTypeSelect.value);
+// 차트 업데이트
+function updateChart() {
+    try {
+        const indicator = indicatorSelect.value;
+        const type = chartTypeSelect.value;
+        createChart(indicator, type);
+    } catch (error) {
+        console.error('Error updating chart:', error);
+        chartCanvas.innerHTML = '<div class="error">차트를 표시하는데 실패했습니다. 다시 시도해주세요.</div>';
+    }
+}
 
-    // 지표 변경 시 차트 업데이트
-    indicatorSelect.addEventListener('change', () => {
-        createChart(indicatorSelect.value, chartTypeSelect.value);
-    });
+// 초기화
+async function initialize() {
+    try {
+        // 로딩 표시
+        chartCanvas.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
+        
+        // 통계 데이터 가져오기
+        healthData = await fetchHealthStats();
+        
+        // 초기 차트 생성
+        updateChart();
 
-    // 차트 종류 변경 시 차트 업데이트
-    chartTypeSelect.addEventListener('change', () => {
-        createChart(indicatorSelect.value, chartTypeSelect.value);
-    });
-}); 
+        // 이벤트 리스너 설정
+        indicatorSelect.addEventListener('change', updateChart);
+        chartTypeSelect.addEventListener('change', updateChart);
+    } catch (error) {
+        console.error('Error initializing:', error);
+        chartCanvas.innerHTML = '<div class="error">데이터를 불러오는데 실패했습니다. 다시 시도해주세요.</div>';
+    }
+}
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', initialize); 
